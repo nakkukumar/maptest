@@ -1,0 +1,89 @@
+  
+  <head>
+	 
+     
+    <meta name="viewport" content="initial-scale=1.0">
+    <meta charset="utf-8">
+    <style>
+      /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+      #map {
+        height: 100%;
+      }
+      /* Optional: Makes the sample page fill the window. */
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="map"></div>
+    <script>
+      var map;
+      function initMap() {
+	   var myLatLng = {lat: 20.5937, lng: 78.9629};
+        map = new google.maps.Map(document.getElementById('map'), {
+          center: myLatLng,
+		  mapTypeId: google.maps.MapTypeId.ROADMAP,
+          zoom: 6
+        });
+		var marker = new google.maps.Marker({
+          position: myLatLng,
+          map: map,
+          title: 'Hello World!'
+        });
+		
+		$.ajax({
+			type: 'POST',
+			url: 'get-indian-map-data',
+			data:{country_name:'india'} ,
+			dataType: 'json',
+			beforeSend: function (data) {
+				  
+			},
+			success: function (data) {  
+				 
+				locations = data ;
+				 
+				var infowindow = new google.maps.InfoWindow();
+
+				var marker, i;
+
+				for (i = 0; i < locations.length; i++) {   
+					 var lati = parseInt(locations[i].latitude);
+					 var longi = parseInt(locations[i].longitude);
+					  
+						  marker = new google.maps.Marker({
+							position: new google.maps.LatLng(locations[i].latitude,locations[i].longitude),
+							map: map
+						  });
+
+						  google.maps.event.addListener(marker, 'click', (function(marker, i) {
+							return function() {
+							  infowindow.setContent(locations[i].state);
+							  infowindow.open(map, marker);
+							}
+						  })(marker, i));
+					 
+				}						
+			},
+			complete:function(){
+				  
+			}
+		});
+
+		 
+
+		
+      }
+    </script>
+	
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA5DSXWnY2GgVPG7k2FDL7-3KuRL9i68Ys&callback=initMap"
+    async defer></script>
+	
+	
+	 
+  </body>
+ 

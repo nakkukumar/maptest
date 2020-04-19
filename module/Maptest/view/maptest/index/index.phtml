@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+ 
+  <style>
+       
+      #map {
+        height: 100%;
+      }
+      /* Optional: Makes the sample page fill the window. */
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+     </style>
+	<br><br>
+		<div><a href="india-map"><button>Show highlighted India map</button></a></div>
+	<br><br>
+    <div id="map"></div>
+    <script>
+      var map;
+      function initMap() {
+		var  myLatLng = {lat: 28.67, lng: 77.21}
+        map = new google.maps.Map(document.getElementById('map'), {
+          center: myLatLng,
+          zoom: 4
+        });
+		
+		var marker = new google.maps.Marker({
+			position: myLatLng,
+			map: map,
+			title: '<a href="get-indian-map-data">India</a>',
+			url: 'india-map'
+		  });
+		  google.maps.event.addListener(marker, 'click', function() {
+			window.location.href = this.url;
+		});
+      }
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA5DSXWnY2GgVPG7k2FDL7-3KuRL9i68Ys&callback=initMap"
+    async defer></script>
+  
+    
